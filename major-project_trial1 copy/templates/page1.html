@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='/css/style.css') }}">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.18.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        .my-rounded-div {
+  /* border: 1px solid #ccc; */
+  border-radius: 70px; /* Adjust the percentage as needed */
+  /* padding: 10px; Optional: Add padding for better appearance */
+
+}
+.dark-input {
+            background-color: #343a40; /* Set your desired dark color */
+            color: #ffffff; /* Set the text color */
+            border: 1px solid #343a40; /* Set border color (if needed) */
+        }
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+    </style>
+
+</head>
+<body style="font-family: 'Montserrat', sans-serif;">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <div class="main-wrapper">
+        <div class="section left col-xs-4 p-5 bg-dark">
+            <div class="half bg-primary my-rounded-div p-5 text-center">
+                <!-- <h4 class="text-white">Top left</h4> -->
+                <!-- <button class="btn my-rounded-div btn-dark btn-lg" onclick="openFileUpload()"><h3>Upload File</h3></button> -->
+                <h3>Upload Files</h3>
+                <!-- <button class="btn btn-success btn-lg" onclick="openChatbot()">Open Chatbot</button> -->
+                <div id="file-upload" style="display: block;">
+                    <!-- Content for File Upload -->
+                    <!-- <h4>File Upload</h4> -->
+                    <div class="mb-3">
+                        <form action="/train_model" method="POST" enctype="multipart/form-data">
+                            <label for="customFile" class="form-label"><h4>Choose a file:</h4></label>
+                            <input type="file" class="form-control dark-input" id="customFile" accept=".csv, .txt, .pdf" name="file">
+                            <p>Accepted formats: .pdf, .txt, .csv, .json</p>
+                            <div class="dropdown dark-input">
+                                <button class="dropbtn" type="button" onclick="toggleDropdown2('dropdownContent2')">Select Language</button>
+                                <div class="dropdown-content" id="dropdownContent2">
+                                                    <a href="#" class="text-sm" onclick="selectOption2('ar')">Arabic</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption2('de')">German</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption2('en')">English</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption2('vi')">Vietnamese</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption2('zh')">Chinese</a>
+                                    <!-- Add more items as needed -->
+                                </div>
+                                <input type="hidden" name="selectedOption2" id="selectedOption2" value="">
+                            </div>
+                            <p>
+                                <input class="btn btn-success btn-lg m-5" type="submit" name="submit" value="Train Files">
+                            </p>
+
+                           
+                        </form>
+                    </div>
+                    <!-- <button class="btn btn-primary" value = "train_files" onclick="trainModel()">Train</button> -->
+                    <!-- <button class="btn btn-info" onclick="closeDiv()">Close</button> -->
+                </div>
+            </div>
+            
+          <div class="half my-rounded-div p-5 bg-secondary">
+              <h2>Contents</h2>
+              <div class="container">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="overflow-auto" style="max-height: 200px;">
+                            {% for key, value in list_files.items() %}
+                                <h4>{{ key }}:</h4>
+                                {% for name in value %}
+                                    <p>{{ name }}</p>
+                                {% endfor %}
+                                <hr style="width: 90%;">
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="center-div" class="section right col-xs-8 d-flex flex-column justify-content-lg-start bg-light  text-center align-items-center justify-content-center overflow-auto" style="background-image: url('{{ url_for('static', filename='Bg_print.png') }}'); background-size: cover;">
+           
+            <div class="col-md-8">
+                <b>
+                        <h1 class="text-center fw-bolder">Cross-Lingual Open-Retrieval Question Answering Model </h1>
+                </b>
+                
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 m-5 mt-1">
+                        <div class="bg-secondary my-rounded-div text-center p-4">
+                            <h2 class="text-white mt-0">Chat Bot</h2>
+                            <!-- Content for Section 1 -->
+                            <div class="row">
+                                <div class="col-md-5 bg-light my-rounded-div m-lg-5 my-lg-3">
+                                    <!-- Content for the first div -->
+                                    <div  id="chat-bot" style="display: block;">
+                                        <!-- Content for Chatbot -->
+                                        <h4>Input:</h4>
+                                        <form action="/process_input" method="POST">
+                                            <input type="text" id="chatInput" name="chatInput">
+                                           <p>
+                                            <input type="submit" value="Submit">
+                                           </p> 
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 bg-light my-rounded-div m-lg-5 my-lg-3 text-center">
+                                    <!-- Content for the second div -->
+                                    <div style="max-height: 200px;" class="overflow-auto">
+                                        <h4>Output:</h4>
+                                    {% for key,value in dict_pairs.items() %}
+                                    <p>{{key}}</p>
+                                    <p><b>{{ value[0]}}</b></p>
+                                    <p id="processed-result">{{ value[1] }}</p>
+                                    <hr class="bg-dark" style="width: 90%;">
+                                {% endfor %}
+                            </div>
+                                </div>
+                            </div>
+                            <!-- Additional content if any -->
+                        </div>
+                    </div>
+                </div>
+                
+            
+                <div style="min-height: fit-content; "class="row">
+                    <div class="col-md-9 m-5 mt-1">
+                        <div class="bg-secondary my-rounded-div p-2">
+                            <h2 class="text-white">Translator</h2>
+
+
+                            <div class="row">
+                                <div class="col-md-5 bg-light my-rounded-div m-lg-5 my-lg-3">
+                                    <!-- Content for the first div -->
+                                    <div calss="dropdown" id="chat-bot" style="display: block;">
+                                        <!-- Content for Chatbot -->
+                                        <h4>Input:</h4>
+                                        <!-- <form class="align-content-center justify-content-center"  action="/process_input" method="POST">
+                                            <input type="text" id="chatInput" name="chatInput">
+                                           <p>
+                                            <input type="submit" value="Submit">
+                                           </p> 
+                                        </form> -->
+                                        <form class="align-content-center justify-content-center" id="dropdownForm" action="/translate_input" method="POST">
+                                            <!-- First Dropdown -->
+                                            <input type="text" id="transInput" name="transInput">
+                                            <div class="dropdown">
+                                                <button class="dropbtn bg-light text-dark btn-sm w-auto " type="button" onclick="toggleDropdown('dropdownContent2')">select <i class="bi bi-arrow-down"></i> </button>
+                                                <div class="dropdown-content col-1 p-2 rounded text-center" id="dropdownContent1">
+                                                    <a href="#" class="text-sm" onclick="selectOption('ar')">Arabic</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption('de')">German</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption('en')">English</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption('vi')">Vietnamese</a>
+                                                    <a href="#" class="text-sm" onclick="selectOption('zh')">Chinese</a>
+                                                    <!-- Add more items as needed -->
+                                                </div>
+                                                
+                                                <input type="hidden" name="selectedOption1" id="selectedOption1" value="">
+                                            </div>
+                                    
+                                            <!-- Second Dropdown -->
+                                            <!-- <div class="dropdown">
+                                                <button class="dropbtn" type="button" onclick="toggleDropdown2('dropdownContent2')">Dropdown 2</button>
+                                                <div class="dropdown-content" id="dropdownContent2">
+                                                    <a href="#" onclick="selectOption2('Option A')">Option A</a>
+                                                    <a href="#" onclick="selectOption2('Option B')">Option B</a>
+                                                    <a href="#" onclick="selectOption2('Option C')">Option C</a>
+                                                    
+                                                </div>
+                                                <input type="hidden" name="selectedOption2" id="selectedOption2" value="">
+                                            </div>
+         -->
+        
+                                    
+                                            <!-- Submit Button -->
+                                           <p>
+                                            <input type="submit" value="Submit">
+                                           </p> 
+                                    
+                                        </form>
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-md-5 bg-light my-rounded-div m-lg-5 my-lg-3 text-center">
+                                    <!-- Content for the second div -->
+                                    <h4>Output:</h4>
+                                    <p><b>{{ trans_output[0] }}</b></p>
+                                    <!-- <p id="processed-result">{{ chat_input_result }}</p> -->
+                                </div>
+                            </div>
+
+
+
+                            <!-- Content for Section 2 -->
+                            <div class="dropdown">
+                                
+                            </div>
+                        
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEX/xFuioNbVyP2gInFZKb94nS8J/KJpMYYpD" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-eA2x0NvbP2FiUCAuLOwvGsrP1pHmGXRoPiLu5fMl3aBMY/yzzUo+SH2z1J6GkfX" crossorigin="anonymous"></script>
+   
+
+    <script>
+        function selectOption(option) {
+            document.getElementById('selectedOption1').value = option;
+            toggleDropdown(); // Close the dropdown after selecting an option
+        }
+
+        function selectOption2(option) {
+            document.getElementById('selectedOption2').value = option;
+            toggleDropdown(); // Close the dropdown after selecting an option
+        }
+
+        function toggleDropdown() {
+            var dropdownContent1 = document.getElementById(dropdownContent1);
+            dropdownContent1.style.display = (dropdownContent1.style.display === 'block') ? 'none' : 'block';
+        }
+        function toggleDropdown2() {
+            var dropdownContent2 = document.getElementById(dropdownContent2);
+            dropdownContent2.style.display = (dropdownContent2.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openFileUpload() {
+            document.getElementById('file-upload').style.display = 'block';
+            // document.getElementById('chat-bot').style.display = 'none';
+            // document.getElementById('default-content').style.display = 'none';
+        }
+
+        function openChatbot() {
+            // document.getElementById('file-upload').style.display = 'none';
+            // document.getElementById('chat-bot').style.display = 'block';
+            // document.getElementById('default-content').style.display = 'none';
+        }
+
+        function closeDiv() {
+            document.getElementById('file-upload').style.display = 'none';
+            // document.getElementById('chat-bot').style.display = 'none';
+            document.getElementById('default-content').style.display = 'block';
+        }
+    </script>
+<!-- file submission handling -->
+<script>
+    function trainModel() {
+        // Get the selected file
+        const fileInput = document.getElementById('customFile');
+        const file = fileInput.files[0];
+
+        // Create FormData object and append the file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Make an AJAX request to the Flask backend
+        fetch('/train_model', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        // Close the form
+        closeDiv();
+    }
+</script>
+
+
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+   </body>
+</html>
